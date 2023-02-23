@@ -1,0 +1,33 @@
+name: myapp
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  dio: ^5.0.0
+  google_fonts: ^2.1.0
+  carousel_slider: ^4.1.1
+  flutter_svg: ^1.1.6
+  image_picker: ^0.8.4+3
+  easy_splash_screen: any
+  get_storage: ^2.0.3
+  rflutter_alert: ^2.0.4
+  art_sweetalert: ^0.0.5
+  get: 4.6.5
+  hexcolor: ^3.0.1
+  http: ^0.13.5
+  lottie: ^2.2.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/icons/
+    - assets/image/
+  uses-material-design: true
