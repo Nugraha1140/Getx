@@ -38,7 +38,7 @@ class LoginController extends GetxController {
       authToken.write('token', response.body['access_token']);
       authToken.write('full_name', response.body['full_name']);
       authToken.write('email', response.body['email']);
-      Get.offAll(() => const DashboardView());
+      Get.offAll(() => DashboardView());
     } else {
       Get.snackbar(
         'Error',

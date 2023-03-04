@@ -8,7 +8,8 @@ import 'package:myapp/app/data/headline_response.dart';
 import 'package:myapp/app/data/sports_response.dart';
 import 'package:myapp/app/data/tecnology_response.dart';
 import 'package:myapp/app/modules/home/views/home_view.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:myapp/app/modules/profile/views/profile_view.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
@@ -22,75 +23,72 @@ class DashboardView extends GetView<DashboardController> {
     return SafeArea(
       // Widget SafeArea menempatkan semua konten widget ke dalam area yang aman (safe area) dari layar.
       child: DefaultTabController(
-        length: 5,
+        length: 4,
         // Widget DefaultTabController digunakan untuk mengatur tab di aplikasi.
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              await auth.erase();
-              Get.offAll(() => const HomeView());
-            },
-            backgroundColor: Colors.redAccent,
-            child: const Icon(Icons.logout_rounded),
+          backgroundColor: Colors.white,
+          drawer: Drawer(
+            child: Column(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(color: Colors.pink),
+                    currentAccountPicture: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                          'https://avatars.githubusercontent.com/u/74711322?v=4'),
+                    ),
+                    accountName: Text('NewUser'),
+                    accountEmail: Text('userNew@email.com')),
+                ListTile(
+                  onTap: () async {
+                    Get.offAll(() => const ProfileView());
+                  },
+                  leading: Icon(
+                    Icons.people_alt_outlined,
+                    size: 25,
+                  ),
+                  title: Text('Profile'),
+                ),
+                ListTile(
+                  onTap: () async {
+                    await auth.erase();
+                    Get.offAll(() => const HomeView());
+                  },
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    size: 25,
+                  ),
+                  title: Text('Logout'),
+                ),
+              ],
+            ),
           ),
           // Widget Scaffold digunakan sebagai struktur dasar aplikasi.
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(120.0),
-            // Widget PreferredSize digunakan untuk menyesuaikan tinggi appBar.
-            child: Column(
-              // Widget Column adalah widget yang menyatukan widget-childnya secara vertikal.
-              children: [
-                ListTile(
-                  // Widget ListTile digunakan untuk menampilkan tampilan list sederhana.
-                  title: const Text(
-                    "Hallo!",
-                    textAlign: TextAlign.end,
-                    // Properti textAlign digunakan untuk menentukan perataan teks.
-                  ),
-                  subtitle: Text(
-                    auth.read('full_name').toString(),
-                    textAlign: TextAlign.end,
-                  ),
-                  trailing: Container(
-                    // Widget Container digunakan untuk mengatur tampilan konten dalam kotak.
-                    margin: const EdgeInsets.only(right: 10),
-                    // Properti margin digunakan untuk menentukan jarak dari tepi kontainer ke tepi widget yang di dalamnya.
-                    width: 50.0,
-                    height: 50.0,
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/image/saya.jpg',
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                const Align(
-                  // Widget Align digunakan untuk menempatkan widget pada posisi tertentu di dalam widget induk.
-                  alignment: Alignment.topLeft,
-                  // Properti alignment digunakan untuk menentukan letak widget di dalam widget induk.
-                  child: TabBar(
-                    // Widget TabBar digunakan untuk menampilkan tab di aplikasi.
-                    labelColor: Colors.black,
-                    // Properti labelColor digunakan untuk menentukan warna teks tab yang dipilih.
-                    indicatorSize: TabBarIndicatorSize.label,
-                    // Properti indicatorSize digunakan untuk menentukan ukuran indikator tab yang dipilih.
-                    isScrollable: true,
-                    // Properti isScrollable digunakan untuk menentukan apakah tab dapat di-scroll atau tidak.
-                    indicatorColor: Colors.white,
-                    // Properti indicatorColor digunakan untuk menentukan warna indikator tab yang dipilih.
-                    tabs: [
-                      // Properti tabs digunakan untuk menentukan teks yang akan ditampilkan pada masing-masing tab.
-                      Tab(text: "Headline"),
-                      Tab(text: "Hiburan"),
-                      Tab(text: "Olahraga"),
-                      Tab(text: "Teknologi"),
-                      Tab(text: "Profile"),
-                    ],
-                  ),
-                ),
+          appBar: AppBar(
+            // automaticallyImplyLeading: false,
+            iconTheme: IconThemeData(color: Colors.black),
+            backgroundColor: Colors.white,
+            title: Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Logo_Vidio.png/1200px-Logo_Vidio.png',
+              width: 100,
+            ),
+            elevation: 0.0,
+            bottom: TabBar(
+              // Widget TabBar digunakan untuk menampilkan tab di aplikasi.
+              labelColor: Colors.black,
+              // Properti labelColor digunakan untuk menentukan warna teks tab yang dipilih.
+              indicatorSize: TabBarIndicatorSize.label,
+              // Properti indicatorSize digunakan untuk menentukan ukuran indikator tab yang dipilih.
+              isScrollable: true,
+              // Properti isScrollable digunakan untuk menentukan apakah tab dapat di-scroll atau tidak.
+              indicatorColor: Colors.white,
+              // Properti indicatorColor digunakan untuk menentukan warna indikator tab yang dipilih.
+              tabs: [
+                // Properti tabs digunakan untuk menentukan teks yang akan ditampilkan pada masing-masing tab.
+                Tab(text: "Headline"),
+                Tab(text: "Hiburan"),
+                Tab(text: "Olahraga"),
+                Tab(text: "Teknologi"),
               ],
             ),
           ),
@@ -102,7 +100,7 @@ class DashboardView extends GetView<DashboardController> {
               entertainment(controller, scrollController),
               sports(controller, scrollController),
               tecnology(controller, scrollController),
-              profile(),
+
               // teknologi(),
               // sains(),
             ],
@@ -462,93 +460,5 @@ class DashboardView extends GetView<DashboardController> {
         );
       },
     );
-  }
-
-  profile() {
-    final auth = GetStorage();
-    return Scaffold(
-        body: ListView(physics: BouncingScrollPhysics(), children: [
-      Container(
-          padding: EdgeInsets.symmetric(horizontal: 48),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                ClipOval(
-                  child: Image.asset(
-                    'assets/image/saya.jpg',
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Nama',
-            ),
-            const SizedBox(height: 10),
-            Text(
-              auth.read('full_name').toString(),
-            ),
-            // const SizedBox(height: 16),
-            Divider(),
-            Text(
-              'Email',
-            ),
-            const SizedBox(height: 10),
-            Text('dikha_029@smkassalaambandung.sch.id'),
-            // auth.read('email'),
-            Divider(),
-            Text(
-              'Deskripsi',
-            ),
-            const SizedBox(height: 10),
-            Text(
-                'Halo Saya Dikha Adi Nugraha. Saya Tinggal Dibandung, Saat Ini Saya Bersekolah Di Smk Assalaam Bandung, Dengan Jurusan Rekayasa Perangkat Lunak'),
-            Divider(),
-          ])),
-      const SizedBox(height: 100),
-      Center(child: Text('Ikuti Saya')),
-      SizedBox(
-        height: 20,
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipOval(
-                child: Image.network(
-                  'https://cdn-icons-png.flaticon.com/512/25/25231.png',
-                  height: 40,
-                  width: 40,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              ClipOval(
-                child: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/2048px-Facebook_f_logo_%282019%29.svg.png',
-                  height: 40,
-                  width: 40,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              ClipOval(
-                child: Image.network(
-                  'https://png.pngtree.com/png-vector/20221018/ourmid/pngtree-instagram-icon-png-image_6315974.png',
-                  height: 40,
-                  width: 40,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-        ],
-      )
-    ]));
   }
 }
